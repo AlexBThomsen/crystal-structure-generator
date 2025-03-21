@@ -49,27 +49,28 @@ pip install -r requirements.txt
 
 ### Generate Common Structures
 ```bash
-python generate_common_structures.py
+python -m crystal_structures.common_structures
 ```
 This will generate JSON files for FCC (Cu), BCC (Fe), and HCP (Ti) structures.
 
 ### Using in Python Code
 ```python
-from generate_common_structures import generate_structure
+from crystal_structures.generator import generate_structure
+from crystal_structures.constants import LATTICE_CONSTANTS
 
 # Generate a 2x2x2 FCC copper structure
-cu_fcc = generate_structure('Cu', 'fcc', 3.61, (2, 2, 2))
+cu_fcc = generate_structure('Cu', 'fcc', LATTICE_CONSTANTS['Cu'], (2, 2, 2))
 
 # Generate a BCC iron structure with default parameters
 fe_bcc = generate_structure('Fe', 'bcc')
 
-# Generate an HCP titanium structure
-ti_hcp = generate_structure('Ti', 'hcp', 2.95, c_over_a=1.587)
+# Generate an HCP titanium structure with c/a ratio
+ti_hcp = generate_structure('Ti', 'hcp', LATTICE_CONSTANTS['Ti'], c_over_a=1.587)
 ```
 
 ### Running Tests
 ```bash
-python -m unittest test_generate_common_structures.py
+python -m pytest crystal_structures/tests/
 ```
 
 ## Output Format
@@ -95,6 +96,17 @@ The script includes comprehensive input validation:
 - Ensures positive lattice constants
 - Validates supercell dimensions
 - Requires c/a ratio for HCP structures
+
+## Package Structure
+```
+crystal_structures/
+├── __init__.py
+├── constants.py      # Element data and default parameters
+├── generator.py      # Core structure generation logic
+├── validators.py     # Input validation functions
+├── common_structures.py  # Pre-defined structure generation
+└── tests/           # Unit tests
+```
 
 ## Definitions
 - `ATOMIC_NUMBERS`: Atomic numbers for elements
